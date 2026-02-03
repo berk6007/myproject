@@ -1,49 +1,63 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8" />
     <title>Bestellliste</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
-
-
-
 <div class="container mt-5">
     <h1 class="mb-4">Bestellliste</h1>
     <a href="{% url 'task-add' %}" class="btn btn-primary mb-3">Neue Bestellung</a>
     <table class="table table-striped">
         <thead>
             <tr>
-		<th>Bestellnummer</th>
+		        <th>Bestellnummer</th>
                 <th>Erstelldatum</th>
                 <th>Bestellung</th>
 		        <th>Arbeitsgruppe</th>
                 <th>Kostenstelle</th>
                 <th>Beschreibung</th>
+                <th>Geliefert</th>
                 <th>Abgeschlossen</th>
                 <th>Aktionen</th>
+                <th>PDF</th>
             </tr>
         </thead>
         <tbody>
             {% for task in tasks %}
             <tr>
-                <td> {{ forloop.revcounter0 }} </td>
+                <td> {{ task.id }} </td>
                 <td>{{ task.created_at  }} </td>
-                <td>{{ task.title }}</td>
-                <td>{{ task.ag}}</td>
-                <td>{{ task.Kostenstelle}}</td>
-                <td>{{ task.description|default:"Keine Beschreibung" }}</td>
+                <td>{{ task.name }}</td>
+                <td>{{ task.arbeitsgruppe}}</td>
+                <td>{{ task.arbeitsgruppe.Kostenstelle}}</td>
+                <td>{{ task.beschreibung|default:"Keine Beschreibung" }}</td>
+                <td>
+                    {% if task.geliefert %}
+                        <span class="badge bg-success">Ja</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Nein</span>
+                    {% endif %}
+                 </td>
                 <td>
                     {% if task.completed %}
                         <span class="badge bg-success">Ja</span>
                     {% else %}
                         <span class="badge bg-warning text-dark">Nein</span>
                     {% endif %}
-                </td>
-                <td>
+                 </td>
+                 <td>
                     <a href="{% url 'task-edit' task.pk %}" class="btn btn-sm btn-info">Bearbeiten</a>
-            </td>
+                 </td>
+                    <td>
+                        {%if task.file %}
+                        <a href="{{task.file.url}}" class="btn btn-success" download>
+                            <i class="fas fa-file-pdf"> </i> Download PDF
+                            </a>
+                            {%else%}
+                                <span>Keine PDF</span>
+                            {%endif%}
+                    </td>
             </tr>
             {% empty %}
             <tr>

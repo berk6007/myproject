@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from .models import Task, Arbeitsgruppe
+from .models import Task, Ag
 
 admin.site.register(Task)
 
-admin.site.register(Arbeitsgruppe)
+admin.site.register(Ag)
+
